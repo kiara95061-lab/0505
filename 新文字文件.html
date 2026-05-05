@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>廣照宮 飛天大聖 | 專屬聊天室</title>
+    <style>
+        /* 壹、字體規範：匯入 jf open 粉圓字體 */
+        @import url('https://cdn.jsdelivr.net/npm/jf-openhuninn@1.1.2/jf-openhuninn-1.1.css');
+
+        /* 貳、色彩計畫規範：設定全域 CSS 變數 */
+        :root {
+            /* 標準色 (主色與暖色) */
+            --brand-main: #4A5F73; /* 飛天大聖藍灰 (30%)：主標題、按鈕、使用者對話框 */
+            --brand-warm: #EFD66E; /* 飛天大聖袍黃 (15%)：點綴、按鈕 Hover 效果 */
+            
+            /* 基礎底色與暗色 */
+            --bg-vintage: #F4EFE5; /* 歲月米白 (30%)：保持呼吸感與平穩安定的背景 */
+            --text-dark: #414441;  /* 默灰 (5%)：主要內文文字 */
+            
+            /* 輔助色預留 (未來可運用於標籤或特定圖示) */
+            --aux-orange: #C38F61; /* 文昌橘 */
+            --aux-green: #748D6D;  /* 文昌綠 */
+            --aux-red: #AA615D;    /* 財神紅 */
+        }
+
+        /* 全域字體與排版設定 */
+        body {
+            font-family: 'jf-openhuninn', 'PingFang TC', sans-serif;
+            font-size: 14pt; /* 規範：內文字級設定為 14pt */
+            line-height: 1.6; /* 規範：行距加寬至 1.5-2 倍，1.6 提供最佳的說故事閱讀節奏 */
+            color: var(--text-dark); /* 規範：文字使用默灰 */
+            background-color: var(--bg-vintage); /* 規範：整體版面至少 30% 歲月米白底色 */
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* 標題與副標題設定 */
+        header {
+            width: 100%; 
+            padding: 40px 0 20px; 
+            text-align: center;
+        }
+
+        h2 {
+            font-weight: bold; /* 規範：加粗的 jf open 粉圓 */
+            color: var(--brand-main); /* 規範：飛天大聖藍灰 */
+            margin: 0 0 5px 0;
+            font-size: 24pt;
+            letter-spacing: 2px;
+        }
+
+        /* Logo/標題下方的點綴色條 */
+        .header-accent {
+            display: inline-block;
+            width: 50px;
+            height: 4px;
+            background-color: var(--brand-warm); /* 規範：飛天大聖袍黃點綴 */
+            border-radius: 2px; /* 規範：圓滑無銳角 */
+        }
+
+        .container { 
+            width: 90%; 
+            max-width: 600px; 
+            margin-top: 10px; 
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 40px;
+        }
+        
+        /* 聊天室視窗本體 */
+        #chat-window {
+            background: white; /* 對話框白底，襯托歲月米白背景，增加層次 */
+            height: 55vh; 
+            border-radius: 20px; /* 規範：圓滑無銳角的收筆呼應 */
+            padding: 25px; 
+            overflow-y: auto;
+            border: 2px solid var(--bg-vintage); 
+            margin-bottom: 20px;
+            display: flex; 
+            flex-direction: column;
+            box-shadow: 0 8px 20px rgba(74, 95, 115, 0.08); /* 飛天大聖藍灰的淡陰影 */
+        }
+
+        /* 對話泡泡設定 */
+        .message { 
+            margin: 12px 0; 
+            padding: 14px 22px; 
+            border-radius: 20px; /* 呼應圓體字親和力 */
+            max-width: 75%; 
+            word-wrap: break-word;
+        }
+        
+        /* 阿公的回覆 (溫潤感) */
+        .bot { 
+            background: var(--bg-vintage); 
+            color: var(--text-dark);
+            align-self: flex-start; 
+            border-bottom-left-radius: 4px; 
+        }
+        
+        /* 使用者的訊息 (主色) */
+        .user { 
+            background: var(--brand-main); 
+            color: white; 
+            align-self: flex-end; 
+            border-bottom-right-radius: 4px; 
+        }
+        
+        /* 輸入區介面 */
+        .input-area { 
+            display: flex; 
+            gap: 12px; 
+        }
+        
+        input { 
+            flex: 1; 
+            border-radius: 25px; 
+            padding: 15px 20px; 
+            border: 2px solid var(--bg-vintage); 
+            outline: none; 
+            font-family: inherit; /* 繼承粉圓字 */
+            font-size: 14pt;
+            color: var(--text-dark);
+            transition: 0.3s;
+        }
+        
+        input:focus { 
+            border-color: var(--brand-main); 
+        }
+        
+        button {
+            background-color: var(--brand-main); 
+            color: white;
+            border: none; 
+            padding: 0 30px; 
+            border-radius: 25px;
+            cursor: pointer; 
+            font-family: inherit;
+            font-size: 14pt;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover { 
+            background-color: var(--brand-warm); /* 互動回饋：變為袍黃色 */
+            color: var(--text-dark);
+            transform: translateY(-2px);
+        }
+
+        /* 自訂捲軸顏色，融入色彩計畫 */
+        #chat-window::-webkit-scrollbar { width: 6px; }
+        #chat-window::-webkit-scrollbar-thumb { background-color: #D3CDC1; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h2>大聖阿公聊天室</h2>
+    <div class="header-accent"></div>
+</header>
+
+<div class="container">
+    <div id="chat-window">
+        <div class="message bot">囡仔，平安啦！我是廣照宮的大聖阿公。今天有什麼煩惱，還是最近身體有哪裡不自在，講乎阿公聽看麥，阿公幫你透解透解。</div>
+    </div>
+    
+    <div class="input-area">
+        <input type="text" id="user-input" placeholder="跟阿公說說您的心事..." onkeypress="handleKeyPress(event)">
+        <button onclick="sendMessage()">傳送</button>
+    </div>
+</div>
+
+<script>
+    const rules = [
+        {
+            keywords: ["生病", "痛", "不舒服", "健康", "累", "看醫生", "操勞"],
+            responses: [
+                "身體愛顧好捏！看你最近是不是比較操勞？要記得多喝溫開水、早點休息，阿公會保庇你身體勇健、早日康復。",
+                "阿公看你面色有點虛，健康第一，不要給自己太大壓力。三餐要正常吃，阿公賜福給你，快快好起來！"
+            ]
+        },
+        {
+            keywords: ["考試", "讀書", "工作", "專案", "報告", "面試", "事業"],
+            responses: [
+                "做事情要有耐心，一步一腳印。阿公看得到你的打拼，放寬心去發揮，結果一定會順順利利的，加油！",
+                "囡仔，免緊張！把平時準備的實力拿出來就好。阿公會做你的靠山，祝你金榜題名、事業順心。"
+            ]
+        },
+        {
+            keywords: ["平安", "拜拜", "早安", "你好", "阿公"],
+            responses: [
+                "平安就是福！有空多來廣照宮走走，阿公隨時都在這裡看顧你們這些囡仔。"
+            ]
+        }
+    ];
+
+    const defaultResponses = [
+        "囡仔，阿公有在聽。凡事照步來，免煩惱，阿公會保庇你平安順序。",
+        "這件事阿公知道了。先去喝杯溫水，晚上好好睡一覺，明天又是一個新的開始！"
+    ];
+
+    function sendMessage() {
+        const input = document.getElementById('user-input');
+        const chatWindow = document.getElementById('chat-window');
+        const text = input.value.trim();
+        if (text === "") return;
+
+        chatWindow.innerHTML += `<div class="message user">${text}</div>`;
+        input.value = "";
+        chatWindow.scrollTop = chatWindow.scrollHeight; 
+
+        let botReply = getBotReply(text);
+
+        setTimeout(() => {
+            chatWindow.innerHTML += `<div class="message bot">${botReply}</div>`;
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }, 1200);
+    }
+
+    function getBotReply(userText) {
+        const text = userText.toLowerCase();
+        for (let rule of rules) {
+            for (let keyword of rule.keywords) {
+                if (text.includes(keyword)) {
+                    const randomIndex = Math.floor(Math.random() * rule.responses.length);
+                    return rule.responses[randomIndex];
+                }
+            }
+        }
+        const randomIndex = Math.floor(Math.random() * defaultResponses.length);
+        return defaultResponses[randomIndex];
+    }
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') sendMessage();
+    }
+</script>
+
+</body>
+</html>
